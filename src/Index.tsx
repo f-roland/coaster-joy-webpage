@@ -3,13 +3,13 @@ import { View, Animated, StyleSheet, useWindowDimensions } from "react-native";
 import { DripsyProvider } from "dripsy";
 import { Buttons } from "./Buttons";
 import { Cover } from "./Cover";
+import { Contact } from "./Contact";
 
-import { Header } from "./Header";
 import { ScrollContainer } from "./ScrollContainer";
 import { ScrollContext } from "./ScrollContext";
 import theme from "./Theme";
 
-export default function HelloWorld() {
+export default function Home() {
   const { height } = useWindowDimensions();
   const scrollPosition = useRef<Animated.Value>(new Animated.Value(0)).current;
   const [scrollY, setScrollY] = useState<number>(0);
@@ -31,6 +31,7 @@ export default function HelloWorld() {
           >
             <Cover />
             <Buttons />
+            <Contact />
           </View>
         </ScrollContainer>
       </ScrollContext.Provider>
