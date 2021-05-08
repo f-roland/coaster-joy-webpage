@@ -8,6 +8,7 @@ import { Contact } from "./Contact";
 import { ScrollContainer } from "./ScrollContainer";
 import { ScrollContext } from "./ScrollContext";
 import theme from "./Theme";
+import { Loader } from "./Loader";
 
 export default function Home() {
   const { height } = useWindowDimensions();
@@ -19,21 +20,23 @@ export default function Home() {
   return (
     <DripsyProvider theme={theme}>
       <ScrollContext.Provider value={[scrollY, scrollPosition]}>
-        <ScrollContainer
-          onScroll={Animated.event([
-            { nativeEvent: { contentOffset: { y: scrollPosition } } },
-          ])}
-        >
-          <View
-            style={{
-              minHeight: height,
-            }}
+        <Loader>
+          <ScrollContainer
+            onScroll={Animated.event([
+              { nativeEvent: { contentOffset: { y: scrollPosition } } },
+            ])}
           >
-            <Cover />
-            <Buttons />
-            <Contact />
-          </View>
-        </ScrollContainer>
+            <View
+              style={{
+                minHeight: height,
+              }}
+            >
+              <Cover />
+              <Buttons />
+              <Contact />
+            </View>
+          </ScrollContainer>
+        </Loader>
       </ScrollContext.Provider>
     </DripsyProvider>
   );

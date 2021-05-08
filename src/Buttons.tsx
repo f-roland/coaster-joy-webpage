@@ -44,9 +44,10 @@ export function Buttons() {
   }, [scrollPosition, layout.top]);
 
   const buttonBoxStyles = useResponsiveValue(styles);
+  const minHeight = useResponsiveValue({ desktop: 500, mobile: 800 });
 
   return (
-    <View style={styles.container} onLayout={onLayout}>
+    <View style={[styles.container, { minHeight }]} onLayout={onLayout}>
       <H1 sx={{ color: "text" }}>Available on your favourite platform:</H1>
       <AnimatePresence>
         {visible && (
@@ -73,7 +74,6 @@ export function Buttons() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    minHeight: 500,
     paddingHorizontal: 24,
     alignItems: "center",
     paddingVertical: 24,
