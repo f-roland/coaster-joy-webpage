@@ -2,7 +2,7 @@
   "main": "index.js",
   "types": "index.d.ts",
   "scripts": {
-    "build": "expo build:web --no-pwa | yes",
+    "build": "node_modules/.bin/expo build:web web-build --no-pwa",
     "android": "react-native run-android",
     "ios": "react-native run-ios",
     "web": "expo start --web",
