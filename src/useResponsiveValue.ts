@@ -5,8 +5,11 @@ type Props = {
   mobile: any;
 };
 
-export function useResponsiveValue({ desktop, mobile }: Props) {
+export function useResponsiveValue(
+  { desktop, mobile }: Props,
+  threshold = 768
+) {
   const { width } = useWindowDimensions();
 
-  return width > 768 ? desktop : mobile;
+  return width > threshold ? desktop : mobile;
 }

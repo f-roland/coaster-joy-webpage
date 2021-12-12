@@ -1,67 +1,56 @@
-import React, { useRef, useState } from "react";
-import { View, Animated, StyleSheet, useWindowDimensions } from "react-native";
+import React from "react";
+import { View, StyleSheet, useWindowDimensions } from "react-native";
 import { DripsyProvider } from "dripsy";
-import { Buttons } from "./Buttons";
-import { Cover } from "./Cover";
-import { Contact } from "./Contact";
 
-import { ScrollContainer } from "./ScrollContainer";
-import { ScrollContext } from "./ScrollContext";
 import theme from "./Theme";
-import { Loader } from "./Loader";
+import { Loader } from "./Components/Loader";
+import { useSelectedSong } from "./SelectedSong";
+import { Buttons } from "./Components/Buttons";
+import { Footer } from "./Components/Footer";
+import { useResponsiveValue } from "./useResponsiveValue";
+import { SongCard } from "./Components/Song";
 
 export default function Home() {
-  const { height } = useWindowDimensions();
-  const scrollPosition = useRef<Animated.Value>(new Animated.Value(0)).current;
-  const [scrollY, setScrollY] = useState<number>(0);
+  const { width, height } = useWindowDimensions();
 
-  scrollPosition.addListener(({ value }) => setScrollY(value));
+  const maxWidth = useResponsiveValue({
+    mobile: width,
+    desktop: 1440,
+  });
+
+  const { selectedSong } = useSelectedSong();
+
+  const { paddingTop, paddingHorizontal } = useResponsiveValue({
+    mobile: { paddingTop: 24, paddingHorizontal: 12 },
+    desktop: { paddingTop: 48, paddingHorizontal: 96 },
+  });
 
   return (
     <DripsyProvider theme={theme}>
-      <ScrollContext.Provider value={[scrollY, scrollPosition]}>
+      <View style={styles.app}>
+        {/* @ts-ignore */}
         <Loader>
-          <ScrollContainer
-            onScroll={Animated.event([
-              { nativeEvent: { contentOffset: { y: scrollPosition } } },
-            ])}
-          >
-            <View
-              style={{
-                minHeight: height,
-              }}
-            >
-              <Cover />
-              <Buttons />
-              <Contact />
-            </View>
-          </ScrollContainer>
+          <View style={[styles.container, { maxWidth, width }]}>
+            <SongCard song={selectedSong} />
+            <Buttons links={selectedSong.links} />
+          </View>
+          <Footer />
         </Loader>
-      </ScrollContext.Provider>
+      </View>
     </DripsyProvider>
   );
 }
 
 const styles = StyleSheet.create({
-  shape: {
-    justifyContent: "center",
-    height: 900,
-    width: 900,
-    borderRadius: 25,
-    marginRight: 10,
-    backgroundColor: "white",
-    overflow: "hidden",
+  app: {
+    backgroundColor: theme.colors.backgroundColor,
+    flex: 1,
+    minWidth: "100vw",
+    minHeight: "100vh",
   },
   container: {
     flex: 1,
-    paddingVertical: 200,
-    alignItems: "center",
-    justifyContent: "center",
-    flexDirection: "row",
-    backgroundColor: "#9c1aff",
-  },
-  image: {
-    width: 900,
-    height: 900,
+    flexGrow: 1,
+    marginHorizontal: "auto",
   },
 });
